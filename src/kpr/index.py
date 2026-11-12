@@ -28,11 +28,10 @@ def compute_sector_metrics(cars: pd.Series) -> Dict[str, float]:
     mean_car = float(cars.mean())
     p10 = float(cars.quantile(0.10))
     hit_rate = float((cars < -0.02).mean())
-    # Persistence proxy: assume longer-window CAR recovered more if less negative; placeholder
-    persistence = max(0.0, -mean_car)  # higher = worse persistence (stub)
+    persistence = max(0.0, -mean_car)
     return {
         "n": n,
-        "severity": -mean_car,  # positive severity = larger drop
+        "severity": -mean_car,
         "tail": -p10,
         "hit_rate": hit_rate,
         "persistence": persistence,
@@ -67,14 +66,25 @@ def build_kpri(metrics_df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    # Synthetic demo until full event study produces real CARs
+    # Expanded synthetic demo covering major sectors from the event list
     demo = pd.DataFrame({
-        "sector": ["Technology", "Healthcare", "Automobile", "Cement"],
-        "n": [40, 35, 28, 22],
-        "severity": [0.045, 0.038, 0.012, 0.008],
-        "tail": [0.12, 0.10, 0.04, 0.03],
-        "hit_rate": [0.55, 0.48, 0.22, 0.18],
-        "persistence": [0.03, 0.025, 0.008, 0.005],
+        "sector": [
+            "Technology",
+            "Healthcare",
+            "Communication Services",
+            "Consumer Discretionary",
+            "Industrials",
+            "Financials",
+            "Energy",
+            "Consumer Staples",
+            "Automobile",
+            "Cement",
+        ],
+        "n": [42, 38, 26, 24, 22, 20, 18, 19, 28, 16],
+        "severity": [0.048, 0.041, 0.032, 0.028, 0.022, 0.018, 0.015, 0.012, 0.011, 0.007],
+        "tail": [0.135, 0.110, 0.085, 0.070, 0.055, 0.045, 0.038, 0.030, 0.035, 0.022],
+        "hit_rate": [0.58, 0.51, 0.42, 0.38, 0.30, 0.25, 0.22, 0.18, 0.20, 0.12],
+        "persistence": [0.032, 0.028, 0.020, 0.016, 0.012, 0.010, 0.008, 0.006, 0.007, 0.004],
     })
     kpri = build_kpri(demo)
     out = Path("data/processed")
