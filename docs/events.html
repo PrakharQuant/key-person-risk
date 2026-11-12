@@ -1,29 +1,125 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Events</title>
-<style>body{background:#0f1115;color:#e6e6e6;font-family:system-ui;margin:2rem;}table{border-collapse:collapse}td,th{border:1px solid #333;padding:0.4rem}a{color:#4fc3f7}</style></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Event Explorer — KPRI</title>
+  <style>
+    :root { --bg: #0f1115; --fg: #e6e6e6; --accent: #4fc3f7; --border: #333; }
+    body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; margin: 1.5rem; }
+    h1 { color: var(--accent); }
+    a { color: var(--accent); }
+    input, select { background: #1a1d24; color: var(--fg); border: 1px solid var(--border); padding: 0.4rem; margin: 0.3rem 0.5rem 0.3rem 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-size: 0.9rem; }
+    th, td { border: 1px solid var(--border); padding: 0.45rem; text-align: left; }
+    th { background: #1a1d24; cursor: pointer; }
+    tr:hover { background: #1e222b; }
+    .note { font-size: 0.8rem; opacity: 0.7; }
+    .flag { color: #ffb74d; }
+  </style>
+</head>
 <body>
-<h1>Event Explorer</h1>
-<table id="tbl"><thead><tr><th>Ticker</th><th>Role</th><th>Type</th><th>Date</th><th>Source</th></tr></thead><tbody></tbody></table>
-<script>
-fetch('data/events.csv').then(r=>r.text()).then(txt=>{
-  const lines = txt.trim().split('\n');
-  const headers = lines[0].split(',');
-  const tbody = document.querySelector('#tbl tbody');
-  for (let i=1;i<lines.length;i++) {
-    const cols = lines[i].split(',');
-    const tr = document.createElement('tr');
-    [1,6,9,7,8].forEach(idx => {
-      const td = document.createElement('td');
-      if (idx===8) {
-        const a = document.createElement('a');
-        a.href = cols[idx]; a.target='_blank'; a.textContent='link';
-        td.appendChild(a);
-      } else td.textContent = cols[idx];
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  }
-}).catch(()=>document.body.insertAdjacentHTML('beforeend','<p>No events.csv yet.</p>'));
-</script>
-<p><a href="index.html">← Home</a></p>
-</body></html>
+  <h1>Event Explorer</h1>
+  <p>Searchable list of CEO/CFO departure events. Nvidia 2026 is flagged as developing and excluded from the statistical sample.</p>
+  <div>
+    <input id="search" type="text" placeholder="Search ticker, company, sector, type..." style="width:280px">
+    <select id="sectorFilter"><option value="">All sectors</option></select>
+    <select id="typeFilter"><option value="">All types</option></select>
+  </div>
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th data-col="ticker">Ticker</th>
+        <th data-col="company">Company</th>
+        <th data-col="sector">Sector</th>
+        <th data-col="role">Role</th>
+        <th data-col="departure_type">Type</th>
+        <th data-col="announcement_datetime">Date</th>
+        <th>Source</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p class="note" id="count"></p>
+  <p><a href="index.html">← Home</a></p>
+
+  <script>
+    let events = [];
+    function parseCSV(text) {
+      const lines = text.trim().split(/\r?\n/);
+      const headers = lines[0].split(',');
+      return lines.slice(1).map(line => {
+        // Simple CSV split that respects basic quoted fields
+        const cols = [];
+        let cur = '', inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const c = line[i];
+          if (c === '"') inQuotes = !inQuotes;
+          else if (c === ',' && !inQuotes) { cols.push(cur); cur = ''; }
+          else cur += c;
+        }
+        cols.push(cur);
+        const obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = (cols[i] || '').trim());
+        return obj;
+      }).filter(e => e.event_id);
+    }
+
+    function render(data) {
+      const tbody = document.querySelector('#tbl tbody');
+      tbody.innerHTML = '';
+      data.forEach(e => {
+        const tr = document.createElement('tr');
+        const cells = [
+          e.ticker,
+          e.company,
+          e.sector,
+          e.role,
+          e.departure_type,
+          e.announcement_datetime ? e.announcement_datetime.split('T')[0] : '',
+          `<a href="${e.source_url}" target="_blank">link</a>`,
+          (e.notes || '') + (e.manual_review_flag === 'True' ? ' <span class="flag">[review]</span>' : '')
+        ];
+        cells.forEach(html => {
+          const td = document.createElement('td');
+          td.innerHTML = html;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      document.getElementById('count').textContent = `${data.length} events shown`;
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const sec = document.getElementById('sectorFilter').value;
+      const typ = document.getElementById('typeFilter').value;
+      const filtered = events.filter(e =>
+        (!q || Object.values(e).some(v => String(v).toLowerCase().includes(q))) &&
+        (!sec || e.sector === sec) &&
+        (!typ || e.departure_type === typ)
+      );
+      render(filtered);
+    }
+
+    fetch('data/events.csv')
+      .then(r => r.text())
+      .then(txt => {
+        events = parseCSV(txt);
+        // Populate filters
+        const sectors = [...new Set(events.map(e => e.sector))].sort();
+        const types = [...new Set(events.map(e => e.departure_type))].sort();
+        const secSel = document.getElementById('sectorFilter');
+        const typSel = document.getElementById('typeFilter');
+        sectors.forEach(s => secSel.add(new Option(s, s)));
+        types.forEach(t => typSel.add(new Option(t, t)));
+        render(events);
+        document.getElementById('search').addEventListener('input', applyFilters);
+        secSel.addEventListener('change', applyFilters);
+        typSel.addEventListener('change', applyFilters);
+      })
+      .catch(() => document.body.insertAdjacentHTML('beforeend', '<p>Failed to load events.csv</p>'));
+  </script>
+</body>
+</html>
