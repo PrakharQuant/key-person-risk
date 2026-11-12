@@ -1,0 +1,11 @@
+ticker,sector,industry,country
+NVDA,Technology,Semiconductors,US
+AAPL,Technology,Consumer Electronics,US
+MSFT,Technology,Software,US
+JNJ,Healthcare,Pharmaceuticals,US
+PFE,Healthcare,Pharmaceuticals,US
+TSLA,Automobile,Auto Manufacturers,US
+F,Automobile,Auto Manufacturers,US
+GM,Automobile,Auto Manufacturers,US
+VMC,Cement,Building Materials,US
+MLM,Cement,Building Materials,US
