@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Methodology</title>
-<style>body{background:#0f1115;color:#e6e6e6;font-family:system-ui;margin:2rem;}a{color:#4fc3f7}</style></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methodology — KPRI</title>
+  <style>
+    body { background: #0f1115; color: #e6e6e6; font-family: system-ui, sans-serif; margin: 2rem; max-width: 800px; line-height: 1.55; }
+    a { color: #4fc3f7; }
+    h1, h2 { color: #4fc3f7; }
+    h2 { margin-top: 2rem; }
+  </style>
+</head>
 <body>
-<h1>Methodology</h1>
-<p>See <a href="../METHODOLOGY.md">METHODOLOGY.md</a> in the repository for full formulas.</p>
-<p>Market model, CAR windows [-1,+1]/[0,+5]/[0,+20], empirical-Bayes shrinkage, configurable weights, bootstrap CIs.</p>
-<p><a href="index.html">← Home</a></p>
-</body></html>
+  <h1>Methodology</h1>
+  <p>Full technical details and formulas are in <a href="../METHODOLOGY.md">METHODOLOGY.md</a>.</p>
+
+  <h2>Event-study design</h2>
+  <ul>
+    <li>Market model estimated on trading days [−250, −30]; require ≥120 observations.</li>
+    <li>Abnormal return = actual − predicted. Cumulative abnormal returns (CARs) over [−1,+1], [0,+5], [0,+20].</li>
+    <li>Winsorization, cross-sectional t-tests, bootstrap confidence intervals, and non-parametric tests.</li>
+    <li>Day-0 alignment rules for after-close and non-trading-day announcements.</li>
+  </ul>
+
+  <h2>Key Person Risk Index (KPRI)</h2>
+  <p>0–100 score per sector combining severity of the average CAR, tail risk (10th percentile), hit rate (share of events with CAR &lt; −2%), and persistence of the drop. Empirical-Bayes shrinkage for small samples. Configurable weights. Sectors with N &lt; 25 are marked “insufficient data.”</p>
+
+  <h2>Is key-person risk priced?</h2>
+  <p><strong>Arguments that it should be:</strong> Firm-specific human capital cannot be fully diversified; sudden departures can signal governance risk; classic event studies find significant negative CARs (especially for founders and R&amp;D-intensive firms); some cross-sectional evidence links key-person concentration to valuation discounts or higher expected returns.</p>
+  <p><strong>Arguments that it may not be fully priced:</strong> Purely idiosyncratic risk should not be priced under standard asset-pricing models; markets may already anticipate departures via succession planning; announcements are often confounded with other news; long-horizon pricing evidence remains mixed.</p>
+  <p>The KPRI measures realized market reactions. Whether those reactions reflect a priced risk premium, information effects, or both is an open empirical question that the repository’s regression and robustness tests are designed to address. The index is descriptive, not a tradable factor.</p>
+
+  <p><a href="index.html">← Home</a> · <a href="limitations.html">Limitations</a></p>
+</body>
+</html>
