@@ -4,15 +4,21 @@
 
 Open-source sectoral index measuring how much stock prices react to CEO/CFO departures.
 
-**Live GitHub Pages**: https://prakharquant.github.io/key-person-risk/ (enable in repo Settings → Pages → Source: main / docs)
+**Author**: Prakhar Gupta  
+Email: [bestofprakhar@gmail.com](mailto:bestofprakhar@gmail.com)  
+LinkedIn: [linkedin.com/in/prakhar-gupta-5b7250372](https://www.linkedin.com/in/prakhar-gupta-5b7250372/)  
+X (Twitter): [@PrakharQuant](https://x.com/PrakharQuant)  
+Personal site: [prakharquant.github.io](https://prakharquant.github.io/)
+
+**Live GitHub Pages**: https://prakharquant.github.io/key-person-risk/
 
 ## Headline findings (demo data)
-On synthetic/placeholder events, Technology and Healthcare rank higher on KPRI than Automobile and Cement, consistent with the hypothesis that key-person risk is larger in founder-led tech/pharma. Real results require the full 400+ event sample (EDGAR scrape). Sample sizes in current demo: Technology 40, Healthcare 35, Automobile 28, Cement 22 (Cement borderline for ranking).
+On synthetic/placeholder events, Technology and Healthcare rank higher on KPRI than Automobile and Cement, consistent with the hypothesis that key-person risk is larger in founder-led tech/pharma. Real results require the full 400+ event sample (EDGAR scrape). Sample sizes in current demo are illustrative.
 
 **Confidence**: Bootstrap CIs will be shown on the live site once full data is generated.
 
 ## Motivating case (developing, excluded from sample)
-**Nvidia, 12 Nov 2026**: CEO Jensen Huang resigned amid personal scandal. CFO Colette Kress named interim CEO. Stock fell ~13% at the open; market capitalization loss exceeded $500 billion.<grok type="render_inline_citation" citation_id="1" />
+**Nvidia, 12 Nov 2026**: CEO Jensen Huang resigned amid personal scandal. CFO Colette Kress named interim CEO. Stock fell ~13% at the open; market capitalization loss exceeded $500 billion.
 
 ## Reproduce
 ```bash
