@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Key Person Risk Index (KPRI)</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root { --bg: #0f1115; --fg: #e6e6e6; --accent: #4fc3f7; }
+    body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; margin: 2rem; }
+    h1 { color: var(--accent); }
+    a { color: var(--accent); }
+    .disclaimer { font-size: 0.85rem; opacity: 0.7; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Key Person Risk Index (KPRI)</h1>
+  <p>Sectoral ranking of abnormal stock returns around CEO/CFO departures.</p>
+  <p><strong>Motivating case (developing, not in sample):</strong> Nvidia 12 Nov 2026 — Jensen Huang resigned; stock ~−13% at open.</p>
+  <div id="chart" style="height:480px;"></div>
+  <p><a href="methodology.html">Methodology</a> · <a href="limitations.html">Limitations</a> · <a href="events.html">Event explorer</a></p>
+  <p class="disclaimer">Research only. Not investment advice. Correlation is not causation. See LIMITATIONS.md.</p>
+  <script>
+    fetch('data/kpri.json')
+      .then(r => r.json())
+      .then(data => {
+        const sectors = data.map(d => d.sector);
+        const kpri = data.map(d => d.kpri);
+        Plotly.newPlot('chart', [{
+          x: sectors,
+          y: kpri,
+          type: 'bar',
+          marker: { color: '#4fc3f7' }
+        }], {
+          paper_bgcolor: '#0f1115',
+          plot_bgcolor: '#0f1115',
+          font: { color: '#e6e6e6' },
+          yaxis: { title: 'KPRI (0–100, higher = more risk)' },
+          title: 'Sectoral Key Person Risk Index (demo data)'
+        });
+      })
+      .catch(e => document.getElementById('chart').innerText = 'Data not yet generated. Run make all.');
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>Events</title>
+<style>body{background:#0f1115;color:#e6e6e6;font-family:system-ui;margin:2rem;}table{border-collapse:collapse}td,th{border:1px solid #333;padding:0.4rem}a{color:#4fc3f7}</style></head>
+<body>
+<h1>Event Explorer</h1>
+<table id="tbl"><thead><tr><th>Ticker</th><th>Role</th><th>Type</th><th>Date</th><th>Source</th></tr></thead><tbody></tbody></table>
+<script>
+fetch('data/events.csv').then(r=>r.text()).then(txt=>{
+  const lines = txt.trim().split('\n');
+  const headers = lines[0].split(',');
+  const tbody = document.querySelector('#tbl tbody');
+  for (let i=1;i<lines.length;i++) {
+    const cols = lines[i].split(',');
+    const tr = document.createElement('tr');
+    [1,6,9,7,8].forEach(idx => {
+      const td = document.createElement('td');
+      if (idx===8) {
+        const a = document.createElement('a');
+        a.href = cols[idx]; a.target='_blank'; a.textContent='link';
+        td.appendChild(a);
+      } else td.textContent = cols[idx];
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+}).catch(()=>document.body.insertAdjacentHTML('beforeend','<p>No events.csv yet.</p>'));
+</script>
+<p><a href="index.html">← Home</a></p>
+</body></html>
