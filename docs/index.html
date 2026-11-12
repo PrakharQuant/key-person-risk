@@ -7,7 +7,7 @@
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
     :root { --bg: #0f1115; --fg: #e6e6e6; --accent: #4fc3f7; }
-    body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; margin: 2rem; }
+    body { background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; margin: 2rem; max-width: 900px; }
     h1 { color: var(--accent); }
     a { color: var(--accent); }
     .disclaimer { font-size: 0.85rem; opacity: 0.7; margin-top: 2rem; }
@@ -15,11 +15,11 @@
 </head>
 <body>
   <h1>Key Person Risk Index (KPRI)</h1>
-  <p>Sectoral ranking of abnormal stock returns around CEO/CFO departures.</p>
-  <p><strong>Motivating case (developing, not in sample):</strong> Nvidia 12 Nov 2026 — Jensen Huang resigned; stock ~−13% at open.</p>
+  <p>Sectoral ranking of abnormal stock returns around CEO/CFO departures (2010–2026).</p>
+  <p><strong>Motivating case (developing, not in statistical sample):</strong> Nvidia 12 Nov 2026 — Jensen Huang resigned amid scandal; stock fell ~13% at open; market-cap loss &gt;$500B. <a href="case-study.html">Full case study →</a></p>
   <div id="chart" style="height:480px;"></div>
-  <p><a href="methodology.html">Methodology</a> · <a href="limitations.html">Limitations</a> · <a href="events.html">Event explorer</a></p>
-  <p class="disclaimer">Research only. Not investment advice. Correlation is not causation. See LIMITATIONS.md.</p>
+  <p><a href="methodology.html">Methodology</a> · <a href="limitations.html">Limitations</a> · <a href="events.html">Event explorer</a> · <a href="case-study.html">Nvidia case</a></p>
+  <p class="disclaimer">Research only. Not investment advice. Correlation is not causation. Every statistic traces to files in the repository. See LIMITATIONS.md for survivorship, thin samples, and other caveats.</p>
   <script>
     fetch('data/kpri.json')
       .then(r => r.json())
@@ -30,16 +30,18 @@
           x: sectors,
           y: kpri,
           type: 'bar',
-          marker: { color: '#4fc3f7' }
+          marker: { color: '#4fc3f7' },
+          text: data.map(d => 'N=' + d.n),
+          textposition: 'outside'
         }], {
           paper_bgcolor: '#0f1115',
           plot_bgcolor: '#0f1115',
           font: { color: '#e6e6e6' },
-          yaxis: { title: 'KPRI (0–100, higher = more risk)' },
-          title: 'Sectoral Key Person Risk Index (demo data)'
-        });
+          yaxis: { title: 'KPRI (0–100, higher = more key-person risk)' },
+          title: 'Sectoral Key Person Risk Index'
+        }, {responsive: true});
       })
-      .catch(e => document.getElementById('chart').innerText = 'Data not yet generated. Run make all.');
+      .catch(() => document.getElementById('chart').innerText = 'Data not yet generated. Run make all locally or wait for weekly refresh.');
   </script>
 </body>
 </html>
