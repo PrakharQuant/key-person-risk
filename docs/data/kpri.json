@@ -1,0 +1,58 @@
+[
+  {
+    "sector": "Technology",
+    "n": 40,
+    "severity": 0.045,
+    "tail": 0.12,
+    "hit_rate": 0.55,
+    "persistence": 0.03,
+    "severity_shrunk": 0.0417,
+    "severity_shrunk_norm": 100.0,
+    "tail_norm": 100.0,
+    "hit_rate_norm": 100.0,
+    "persistence_norm": 100.0,
+    "kpri": 100.0
+  },
+  {
+    "sector": "Healthcare",
+    "n": 35,
+    "severity": 0.038,
+    "tail": 0.10,
+    "hit_rate": 0.48,
+    "persistence": 0.025,
+    "severity_shrunk": 0.0355,
+    "severity_shrunk_norm": 78.4,
+    "tail_norm": 77.8,
+    "hit_rate_norm": 81.1,
+    "persistence_norm": 80.0,
+    "kpri": 79.1
+  },
+  {
+    "sector": "Automobile",
+    "n": 28,
+    "severity": 0.012,
+    "tail": 0.04,
+    "hit_rate": 0.22,
+    "persistence": 0.008,
+    "severity_shrunk": 0.0165,
+    "severity_shrunk_norm": 25.5,
+    "tail_norm": 11.1,
+    "hit_rate_norm": 10.8,
+    "persistence_norm": 12.0,
+    "kpri": 16.8
+  },
+  {
+    "sector": "Cement",
+    "n": 22,
+    "severity": 0.008,
+    "tail": 0.03,
+    "hit_rate": 0.18,
+    "persistence": 0.005,
+    "severity_shrunk": 0.0139,
+    "severity_shrunk_norm": 18.4,
+    "tail_norm": 0.0,
+    "hit_rate_norm": 0.0,
+    "persistence_norm": 0.0,
+    "kpri": 7.4
+  }
+]
