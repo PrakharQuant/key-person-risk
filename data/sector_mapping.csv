@@ -2,8 +2,8 @@ ticker,sector,industry,country
 NVDA,Technology,Semiconductors,US
 AAPL,Technology,Consumer Electronics,US
 MSFT,Technology,Software,US
-JNJ,Healthcare,Pharmaceuticals,US
-PFE,Healthcare,Pharmaceuticals,US
+JNJ,Healthcare,Pharma,US
+PFE,Healthcare,Pharma,US
 TSLA,Automobile,Auto Manufacturers,US
 F,Automobile,Auto Manufacturers,US
 GM,Automobile,Auto Manufacturers,US

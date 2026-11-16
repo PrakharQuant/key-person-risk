@@ -1,5 +1,7 @@
 # Data Quality Report
 
-Failed tickers: none (placeholder)
+Failed tickers: ['^GSPC', 'XLK', 'XLV', 'XLY', 'XLB', 'NVDA', 'AAPL']
+Survivorship note: delisted tickers are logged and not silently dropped.
 
-Survivorship note: delisted/acquired companies are logged here and not silently dropped. yfinance may omit some historical series; see raw parquet files.
+## Events
+Sample dataset used for skeleton. Full EDGAR scrape targets 400+ events.
